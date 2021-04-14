@@ -1,7 +1,8 @@
 Seedbox.Management Application
 ====================================
 
-Demo application for making team familiar with Containerization (Docker Containers) and Microservices based on transmission Bittorrent Client\
+Demo application for making team familiar with Containerization (Docker Containers) and Microservices\
+Based on transmission Bittorrent Client\
 [Seedbox] <https://rollmaps.com/page-238/seedbox-2-2/>
 
 ---
