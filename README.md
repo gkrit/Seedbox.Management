@@ -156,13 +156,9 @@ on the following linux image zimme/transmission-daemon.
 
     ```
     docker run -d --init --name seedbox1 --hostname seedbox1 --network seedbox-network -p 9092:9091 -p 51414:51414 -p 51414:51414/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox1:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
-    ```
 
-    ```
     docker run -d --init --name seedbox2 --hostname seedbox2 --network seedbox-network -p 9093:9091 -p 51415:51415 -p 51415:51415/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox2:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
-    ```
 
-    ```
     docker run -d --init --name seedbox3 --hostname seedbox3 --network seedbox-network -p 9094:9091 -p 51416:51416 -p 51416:51416/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox3:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
 
     ```
@@ -189,7 +185,7 @@ on the following linux image zimme/transmission-daemon.
 8. >Edit config file settings.json
     located in $pwd\Transmission\daemon\linux\config\seedbox{n}
     
-    Change the following lines
+    * Change the following lines
 
         ```
         "rpc-whitelist": "172.18.*"
