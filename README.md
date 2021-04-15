@@ -189,31 +189,15 @@ on the following linux image zimme/transmission-daemon.
 8. >Edit config file settings.json
     located in $pwd\Transmission\daemon\linux\config\seedbox{n}
     
-    1. Change the following line
+    Change the following lines
 
         ```
         "rpc-whitelist": "172.18.*"
-        ```
-
-    2. Change the following line
-
-        ```
         "rpc-host-whitelist": "seedbox1,seedbox2,seedbox3"
+        "peer-port": "<port associated to this seedbox>"
         ```
 
-    3. Change the following line
-
-        ```
-        "peer-port": "51413"
-        ```
-        
-        to the port associated to this container 
-        
-        ```
-        e.g 51414
-        ```
-
-9.  Start the containers
+9. Start the containers
     
     ```
     docker start seedbox1 seedbox2 seedbox3
