@@ -207,3 +207,30 @@ on the following linux image zimme/transmission-daemon.
 
 8. Optional, before we try to download any torrent file, we can validate the running seedboxes using the gui transmision client
    >Run the client session based on the batch file Transmission\client\seedbox{n}-session.bat
+
+9. Create manager image
+
+     ><https://docs.docker.com/engine/reference/commandline/build/>
+
+     ````
+     cd src\Services\Seedbox.Manager\Seedbox.Manager.WebAPI
+     docker build -t seedbox.manager .
+     ```` 
+
+10. Run the manager
+
+    ````
+    docker run -d --name seedbox.manager  --network seedbox-network -p 5000:5000  seedbox.manager
+    ````
+
+11. open swagger interface of manager (api documantation)
+
+    ```
+    http://localhost:5000/swagger/index.html
+    ```
+
+    check session of seedbox1
+    ```
+    curl -X GET "http://localhost:5000/Manager/getSession?seedbox=1" -H  "accept: text/plain"
+    ```
+
