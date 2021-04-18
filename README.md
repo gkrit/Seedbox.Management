@@ -206,4 +206,4 @@ on the following linux image zimme/transmission-daemon.
     ```
 
 8. Optional, before we try to download any torrent file, we can validate the running seedboxes using the gui transmision client
-   >Run the client session based on the batch file $pwd\Transmission\client\seedbox{n}-session.bat
+   >Run the client session based on the batch file Transmission\client\seedbox{n}-session.bat
