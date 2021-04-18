@@ -513,8 +513,13 @@ FodyWeavers.xsd
 ############################################
 # Created by gkrit 
 Transmission/daemon/linux/config/seedbox1/
+!Transmission/daemon/linux/config/seedbox1/settings.json
+
 Transmission/daemon/linux/config/seedbox2/
+!Transmission/daemon/linux/config/seedbox2/settings.json
+
 Transmission/daemon/linux/config/seedbox3/
+!Transmission/daemon/linux/config/seedbox3/settings.json
 
 #ignore gkrit.txt
 gkrit.txt

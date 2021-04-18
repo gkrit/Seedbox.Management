@@ -72,6 +72,7 @@ Here are the steps required to run the application
     ```
     docker network create seedbox-network
     ```
+    ><https://docs.docker.com/engine/reference/commandline/network_create/>
 
 2. Find the subnet of the seedbox-network .
 
@@ -94,40 +95,39 @@ Here are the steps required to run the application
     e.g 172.18.*
     ```
 
-3. Specify a TCP/UDP port for each seedbox.
+3. Consider a TCP/UDP port for each seedbox.
    This is a port of the bittorrent protocol.
 
    ```
    e.g 51414
    ```
 
-   So, in order to have connectivity with the outside world we must
-   make the necessary network settings to open the above port .
-   a. in the router, that is, port forwarding to the docker host.
+   So, in order to have connectivity with the outside world we must make the necessary network settings to open the above port\
+   a. in the router, that is, port forwarding to the docker host\
    b. in the docker host firewall
 
-   In this application we have provisioned the following ports
+   In this application we have provisioned the following ports (3 seedboxes)
 
    ```
-   51414, 51415, 51416 (3 seedboxes)
+   51414, 51415, 51416 
    ```
 
 4. If we need direct access from the docker host to each seedbox (through available gui client)
-    then we must specify an additional port.
+    then we must consider an additional port.
 
     ```
     eg. 9092
     ```
 
-    In this application we will use an availble windows gui client for direct access to each seedbox container.
-    This is not obligatory.
+    In this application we will use an availble windows gui client for direct access to each seedbox container.\
+    This is not obligatory.\
     If this is the case, the following ports are also provisioned :
 
     ```
     9092, 9093, 9094
     ```
 
-5. We are ready to run a seedbox instance based
+5. We are ready to run seedbox instances based
 on the following linux image zimme/transmission-daemon.
 
     ><https://github.com/zimme/docker-transmission-daemon>
@@ -142,8 +142,8 @@ on the following linux image zimme/transmission-daemon.
 
     * config folder mount
   
-        This is an initially empty folder.
-        When the transition-daemon starts, it generates initial configuration artifacts.
+        This is folder where we should put the configuration file of transmission-daemon, settings.json.
+        ><https://github.com/transmission/transmission/wiki/Editing-Configuration-Files>
 
     * downloads folder mount
   
@@ -155,11 +155,11 @@ on the following linux image zimme/transmission-daemon.
 
 
     ```
-    docker run -d --init --name seedbox1 --hostname seedbox1 --network seedbox-network -p 9092:9091 -p 51414:51414 -p 51414:51414/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox1:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
+    docker run -d --init --name seedbox1 --hostname seedbox1 --network seedbox-network -p 9092:9091 -p 51414:51413 -p 51414:51413/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox1:/config -v $pwd\Transmission\daemon\linux\downloads:/downloads zimme/transmission-daemon
 
-    docker run -d --init --name seedbox2 --hostname seedbox2 --network seedbox-network -p 9093:9091 -p 51415:51415 -p 51415:51415/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox2:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
+    docker run -d --init --name seedbox2 --hostname seedbox2 --network seedbox-network -p 9093:9091 -p 51415:51413 -p 51415:51413/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox2:/config -v $pwd\Transmission\daemon\linux\downloads:/downloads zimme/transmission-daemon
 
-    docker run -d --init --name seedbox3 --hostname seedbox3 --network seedbox-network -p 9094:9091 -p 51416:51416 -p 51416:51416/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox3:/config -v $pwd\Transmission\daemon\linux\downloads:/var/lib/transmission/Downloads zimme/transmission-daemon
+    docker run -d --init --name seedbox3 --hostname seedbox3 --network seedbox-network -p 9094:9091 -p 51416:51413 -p 51416:51413/udp -e TZ=Europe/Athens -v $pwd\Transmission\daemon\linux\config\seedbox3:/config -v $pwd\Transmission\daemon\linux\downloads:/downloads zimme/transmission-daemon
 
     ```
 
@@ -176,25 +176,29 @@ on the following linux image zimme/transmission-daemon.
     >[execute all docker run commands]\
     >net start winnat
 
-7. Stop Containers to edit configuration
+7. Optional, if we need to edit configuration
     
+   * Stop the containers
+
     ```
     docker stop seedbox1 seedbox2 seedbox3
     ```
 
-8. >Edit config file settings.json
+   >Edit config file settings.json
     located in $pwd\Transmission\daemon\linux\config\seedbox{n}
     
-    * Change the following lines
+    * e.g Change the following lines
 
-        ```
-        "rpc-whitelist": "172.18.*"
-        "rpc-host-whitelist": "seedbox1,seedbox2,seedbox3"
-        "peer-port": "<port associated to this seedbox>"
-        ```
+    ```
+    "rpc-whitelist": "172.18.*"
+    "rpc-host-whitelist": "seedbox1,seedbox2,seedbox3"
+    ```
 
-9. Start the containers
-    
+    * Start the containers again
+
     ```
     docker start seedbox1 seedbox2 seedbox3
     ```
+
+8. Optional, before we try to download any torrent file, we can validate the running seedboxes using the gui transmision client
+   >Run the client session based on the batch file $pwd\Transmission\client\seedbox{n}-session.bat
