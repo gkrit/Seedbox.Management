@@ -143,6 +143,11 @@ on the following linux image zimme/transmission-daemon.
     * config folder mount
   
         This is folder where we should put the configuration file of transmission-daemon, settings.json.
+        We want each seedbox to maintain different configuration, so we have a different config folder.
+        Additionally, in this config folder, each seedbox will save the running stats of the session.
+        Initially, before downloading any torrent, we can copy the settings.json from initial-config folder
+        to config/seedbox{n} folder. 
+        The semantics for each configuration value can be seen in the following link
         ><https://github.com/transmission/transmission/wiki/Editing-Configuration-Files>
 
     * downloads folder mount
