@@ -15,7 +15,6 @@ namespace Seedbox.Manager.WebAPI.Controllers
         private readonly ILogger<ManagerController> _logger;
         private static readonly string HOST = "http://seedbox{0}:9091/transmission/rpc";
         private static readonly string SESSION_ID = "";
-        private Client client = null;
 
         public ManagerController(ILogger<ManagerController> logger)
         {
@@ -25,7 +24,7 @@ namespace Seedbox.Manager.WebAPI.Controllers
         [HttpGet("getSession")]
         public SessionInfo GetSessionInfo(eSeedBoxIndex seedbox)
         {
-            client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
+            var client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
             SessionInfo info = client.GetSessionInformation();
             return info;
         }
@@ -33,12 +32,21 @@ namespace Seedbox.Manager.WebAPI.Controllers
         [HttpPost("changeAltSpeedDown")]
         public bool ChangeAlternativeSpeedDown(eSeedBoxIndex seedbox, int offset)
         {
-            client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
+            var client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
             SessionInfo info = client.GetSessionInformation();
 
-            //Set new session settinhs
+            //Set new session settings
             client.SetSessionSettings(new SessionSettings() { AlternativeSpeedDown = info.AlternativeSpeedDown += offset });
             return true;
+        }
+
+        [HttpPost("PortTest")]
+        public bool PortTest(eSeedBoxIndex seedbox)
+        {
+            var client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
+
+            bool ok = client.PortTest();
+            return ok;
         }
 
     }
