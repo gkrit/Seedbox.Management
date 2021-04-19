@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Seedbox.Manager.WebAPI.Models;
 using Transmission.API.RPC;
+using Transmission.API.RPC.Arguments;
 using Transmission.API.RPC.Entity;
 
 namespace Seedbox.Manager.WebAPI.Controllers
@@ -19,17 +20,25 @@ namespace Seedbox.Manager.WebAPI.Controllers
         public ManagerController(ILogger<ManagerController> logger)
         {
             _logger = logger;
-            //client = new Client(HOST, SESSION_ID);
         }
 
         [HttpGet("getSession")]
         public SessionInfo GetSessionInfo(eSeedBoxIndex seedbox)
         {
-            SessionInfo info = null;
-            //int port = 9091 + (int)seedbox;
             client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
-            info = client.GetSessionInformation();
+            SessionInfo info = client.GetSessionInformation();
             return info;
+        }
+
+        [HttpPost("changeAltSpeedDown")]
+        public bool ChangeAlternativeSpeedDown(eSeedBoxIndex seedbox, int offset)
+        {
+            client = new Client(string.Format(HOST, (int)seedbox), SESSION_ID);
+            SessionInfo info = client.GetSessionInformation();
+
+            //Set new session settinhs
+            client.SetSessionSettings(new SessionSettings() { AlternativeSpeedDown = info.AlternativeSpeedDown += offset });
+            return true;
         }
 
     }
